@@ -23,7 +23,8 @@ const endPageButton = endPage.querySelector('.end-page__button');
 const infoPage = document.querySelector('.info-page');
 const infoPageButton = document.querySelector('.info-page__button');
 
-const nails = document.querySelectorAll('.nail');
+const nailsBlock = document.querySelector('.nails-block')
+const nails = nailsBlock.querySelectorAll('.nail');
 
 
 // additional constants for debug and help
@@ -326,7 +327,7 @@ fourthPageButton.addEventListener('click', () => {
     startCamera();
     fourthPageInfo.classList.add('fourth-page__info_disabled');
     fourthPageTextChoose.style.display = 'none';
-    nailsSliced.style.opacity = 1;
+    nailsBlock.classList.remove('nails-block_disabled');
     fourthPageButton.textContent = 'Сохранить';
     // if (fourthPageButton.disabled) {
     //   fourthPageButton.textContent = 'Сохранить';
@@ -351,26 +352,32 @@ nailButtons.forEach((elem, index) => {
       startCamera();
       fourthPageTextChoose.style.display = 'none';
       fourthPageInfo.classList.add('fourth-page__info_disabled');
-      nailsSliced.style.opacity = 1;
+      nailsBlock.classList.remove('nails-block_disabled');
     }
     switch (index) {
       case 0:
         nailButtons[0].src = './images/nail-circle-1-active.svg';
         nailButtons[1].src = './images/nail-circle-2.svg';
         nailButtons[2].src = './images/nail-circle-3.svg';
-        nailsSliced.src = './images/red.png';
+        nails.forEach((nail, index) => {
+          nail.src = `./images/red-${index + 1}.png`;
+        });
         break;
       case 1:
         nailButtons[1].src = './images/nail-circle-2-active.svg';
         nailButtons[0].src = './images/nail-circle-1.svg';
         nailButtons[2].src = './images/nail-circle-3.svg';
-        nailsSliced.src = './images/blue.png';
+        nails.forEach((nail, index) => {
+          nail.src = `./images/blue-${index + 1}.png`;
+        });
         break;
       case 2:
         nailButtons[2].src = './images/nail-circle-3-active.svg';
         nailButtons[1].src = './images/nail-circle-2.svg';
         nailButtons[0].src = './images/nail-circle-1.svg';
-        nailsSliced.src = './images/gray.png';
+        nails.forEach((nail, index) => {
+          nail.src = `./images/gray-${index + 1}.png`;
+        });
         break;
     
       default:
@@ -381,7 +388,7 @@ nailButtons.forEach((elem, index) => {
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
       .then((stream) => {
           console.log('start video around switch case')
-          nailsSliced.style.opacity = 1;
+          nailsBlock.classList.remove('nails-block_disabled');
           fourthPageVideo.srcObject = stream;
           fourthPageInfo.classList.add('fourth-page__info_disabled');
           fourthPageTextChoose.style.display = 'none';

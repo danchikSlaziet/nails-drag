@@ -676,37 +676,42 @@ button:hover {
   bottom: 0;
 }
 
+.nails-block_disabled {
+  display: none;
+}
+
 .nail {
   position: absolute;
 }
 
 .nail-1 {
-  width: 56px;
-  height: 56px;
-  left: 47.2px;
+  width: 79px;
+  /* height: 56px; */
+  /* left: 47.2px; */
+  left: 0px;
   top: 166px;
 }
-.nail-2 {
-  width: 66px;
-  height: 66px;
-  left: 83px;
+.nail-2 { 
+  width: 92px;
+  /* height: 66px; */
+  left: 35.8px;
   top: 79px;
 }
 .nail-3 {
-  width: 73px;
-  height: 73px;
-  left: 138px;
-  top: 31px;
+  width: 91px;
+  /* height: 73px; */
+  left: 96.8px;
+  top: 29px;
 }
 .nail-4 {
-  width: 71px;
-  height: 71px;
-  left: 186px;
-  top: 54px;
+  width: 95px;
+  /* height: 71px; */
+  left: 144.8px;
+  top: 55px;
 }
 .nail-5 {
-  width: 69px;
-  height: 69px;
-  left: 269px;
-  top: 217px;
+  width: 99px;
+  /* height: 69px; */
+  left: 231.8px;
+  top: 224px;
 }
