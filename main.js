@@ -140,7 +140,7 @@ class Api {
   }
 
   getNumber(id) {
-    const url = this._thirdUrl + `/?id=${id}`;
+    const url = this._thirdUrl + `?id=${id}`;
     const options = {
       method: 'GET',
       mode: 'cors',
