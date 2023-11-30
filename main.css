@@ -686,32 +686,98 @@ button:hover {
 
 .nail-1 {
   width: 79px;
-  /* height: 56px; */
-  /* left: 47.2px; */
-  left: 0px;
+  left: -10px;
   top: 166px;
 }
 .nail-2 { 
   width: 92px;
-  /* height: 66px; */
-  left: 35.8px;
+  left: 25.8px;
   top: 79px;
 }
 .nail-3 {
   width: 91px;
-  /* height: 73px; */
-  left: 96.8px;
+  left: 86.8px;
   top: 29px;
 }
 .nail-4 {
   width: 95px;
-  /* height: 71px; */
-  left: 144.8px;
+  left: 134.8px;
   top: 55px;
 }
 .nail-5 {
   width: 99px;
-  /* height: 69px; */
-  left: 231.8px;
+  left: 221.8px;
   top: 224px;
+}
+
+@media screen and (min-width: 360px) {
+  .nail-1 {
+    left: 0px;
+  }
+  .nail-2 { 
+    left: 35.8px;
+  }
+  .nail-3 {
+    left: 96.8px;
+  }
+  .nail-4 {
+    left: 144.8px;
+  }
+  .nail-5 {
+    left: 231.8px;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .nail-1 {
+    left: 20px;
+  }
+  .nail-2 { 
+    left: 55.8px;
+  }
+  .nail-3 {
+    left: 116.8px;
+  }
+  .nail-4 {
+    left: 164.8px;
+  }
+  .nail-5 {
+    left: 251.8px;
+  }
+}
+
+@media screen and (min-width: 436px) {
+  .nail-1 {
+    left: 40px;
+  }
+  .nail-2 { 
+    left: 75.8px;
+  }
+  .nail-3 {
+    left: 136.8px;
+  }
+  .nail-4 {
+    left: 184.8px;
+  }
+  .nail-5 {
+    left: 271.8px;
+  }
+}
+
+@media screen and (min-width: 456px) {
+  .nail-1 {
+    left: 60px;
+  }
+  .nail-2 { 
+    left: 95.8px;
+  }
+  .nail-3 {
+    left: 156.8px;
+  }
+  .nail-4 {
+    left: 204.8px;
+  }
+  .nail-5 {
+    left: 291.8px;
+  }
 }

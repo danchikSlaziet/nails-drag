@@ -237,6 +237,9 @@ function phoneInputHandler() {
 
 secondPageInput.addEventListener('input', () => {
   phoneInputHandler();
+  api.sendStatistics(userData, 'нажатие на "инпут(ввод номера телефона)" на экране с номером телефона')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
 })
 
 secondPageInput.addEventListener('focus', () => {
@@ -260,6 +263,9 @@ secondPageInput.addEventListener('blur', () => {
 
 
 firstPageButton.addEventListener('click', () => {
+  api.sendStatistics(userData, 'нажатие на кнопку "далее" на 1 экране')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   firstPage.classList.add('first-page_disabled');
   if (firstTime) {
     secondPage.classList.remove('second-page_disabled');
@@ -278,6 +284,9 @@ secondPageButton.addEventListener('click', () => {
   api.postNumber(parseInt(userData["id"]), secondPageInput.value)
     .then(data => console.log(data))
     .catch(err => console.log(err));
+  api.sendStatistics(userData, 'нажатие на кнопку "проверить подписку МТС premium" на экране с номером телефона')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   // secondPageInput.addEventListener('blur', () => {
   //   if (detect.os() === 'iOS') {
   //     secondPageInput.style.transform = 'translateY(0)';
@@ -292,6 +301,9 @@ secondPageButton.addEventListener('click', () => {
 thirdPageButton.addEventListener('click', () => {
   thirdPage.classList.add('third-page_disabled');
   fourthPage.classList.remove('fourth-page_disabled');
+  api.sendStatistics(userData, 'нажатие на кнопку "Приступить" на экране 3 экране ("Твой номер записан. Ты можешь создать новое изображение")')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
 });
 
 async function sendPhoto(assetElement) {
@@ -420,7 +432,9 @@ function startDrag(e) {
 
 function startDragTouch(e) {
   e.preventDefault();
-
+  api.sendStatistics(userData, 'перемещение ногтей')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   const nail = e.target;
   const offsetX = e.touches[0].clientX - parseFloat(getComputedStyle(nail).left);
   const offsetY = e.touches[0].clientY - parseFloat(getComputedStyle(nail).top);
@@ -444,6 +458,9 @@ function startDragTouch(e) {
 
 fourthPageButton.addEventListener('click', () => { 
   if (fourthPageButton.textContent.trim() === 'Сохранить') {
+    api.sendStatistics(userData, 'нажатие на кнопку "Сохранить" на экране с выбором ногтей')
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
 
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
@@ -480,6 +497,9 @@ fourthPageButton.addEventListener('click', () => {
     sendPhoto(finalPageIMG);
   }
   if (detect.os() === 'iOS' && fourthPageButton.textContent.trim() === 'Продолжить') {
+    api.sendStatistics(userData, 'нажатие на кнопку "Продолжить" на экране с выбором ногтей')
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
     startCamera();
     fourthPageInfo.classList.add('fourth-page__info_disabled');
     fourthPageTextChoose.style.display = 'none';
@@ -518,6 +538,9 @@ nailButtons.forEach((elem, index) => {
         nails.forEach((nail, index) => {
           nail.src = `./images/red-${index + 1}.png`;
         });
+        api.sendStatistics(userData, 'нажатие на кнопку "Красные ногти" на экране с выбором ногтей')
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
         break;
       case 1:
         nailButtons[1].src = './images/nail-circle-2-active.svg';
@@ -526,6 +549,9 @@ nailButtons.forEach((elem, index) => {
         nails.forEach((nail, index) => {
           nail.src = `./images/blue-${index + 1}.png`;
         });
+        api.sendStatistics(userData, 'нажатие на кнопку "Фиолетовые ногти" на экране с выбором ногтей')
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
         break;
       case 2:
         nailButtons[2].src = './images/nail-circle-3-active.svg';
@@ -534,6 +560,9 @@ nailButtons.forEach((elem, index) => {
         nails.forEach((nail, index) => {
           nail.src = `./images/gray-${index + 1}.png`;
         });
+        api.sendStatistics(userData, 'нажатие на кнопку "Серые ногти" на экране с выбором ногтей')
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
         break;
     
       default:
@@ -557,6 +586,9 @@ nailButtons.forEach((elem, index) => {
 });
 
 infoPageButton.addEventListener('click', () => {
+  api.sendStatistics(userData, 'нажатие на кнопку "Понятно" на экране после отказа доступа к камере')
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
   location.reload();
 })
 
@@ -564,12 +596,18 @@ function startCamera() {
   navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
       .then((stream) => {
           console.log('startCamera()')
+          api.sendStatistics(userData, 'предоставление доступа к камере')
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
           fourthPageVideo.srcObject = stream;
           if (!fourthPage.className.includes('disabled') && fourthPageButton.disabled) {
             fourthPageInfo.classList.add('fourth-page__info_disabled');
           }
       })
       .catch((error) => {
+        api.sendStatistics(userData, 'отказ доступа к камере')
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
         if (detect.os() === 'iOS') {
           infoPage.classList.remove('info-page_disabled');
           firstPage.classList.add('first-page_disabled');
@@ -593,6 +631,9 @@ function stopCamera() {
 }
 
 endPageButton.addEventListener('click', () => {
+  api.sendStatistics(userData, 'нажатие на кнопку "Выбрать другой дизайн" на последнем экране')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   endPage.classList.add('end-page_disabled');
   fourthPage.classList.remove('fourth-page_disabled');
 })
