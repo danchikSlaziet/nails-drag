@@ -408,7 +408,9 @@ nails.forEach(nail => {
 
 function startDrag(e) {
   e.preventDefault();
-
+  api.sendStatistics(userData, 'перемещение ногтей')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   const nail = e.target;
   const offsetX = e.clientX - parseFloat(getComputedStyle(nail).left);
   const offsetY = e.clientY - parseFloat(getComputedStyle(nail).top);
