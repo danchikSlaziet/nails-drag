@@ -40,10 +40,11 @@ const apiUrl = `https://api.telegram.org/bot${botToken}/sendPhoto`;
 // ================ FETCH ==================
 
 class Api {
-  constructor({baseUrl, secondUrl, thirdUrl}) {
+  constructor({baseUrl, secondUrl, thirdUrl, fourthUrl}) {
     this._baseUrl = baseUrl;
     this._secondUrl = secondUrl;
     this._thirdUrl = thirdUrl;
+    this._fourthUrl = fourthUrl;
   }
 
   _getFetch(url, options) {
@@ -123,7 +124,7 @@ class Api {
       "id": id,
       "number": number
     }
-    const url = this._thirdUrl;
+    const url = this._fourthUrl;
     const options = {
       method: 'POST',
       mode: 'cors',
@@ -159,7 +160,8 @@ class Api {
 const api = new Api({
   baseUrl: 'https://nails.ilovebot.ru/api/statistics',
   secondUrl: 'https://nails.ilovebot.ru/api/save_file',
-  thirdUrl: 'https://nails.ilovebot.ru/api/get_number'
+  thirdUrl: 'https://nails.ilovebot.ru/api/get_number',
+  fourthUrl: 'https://nails.ilovebot.ru/api/set_number'
 });
 
 let detect = new MobileDetect(window.navigator.userAgent);
