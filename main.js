@@ -36,6 +36,132 @@ let userChatId = '';
 const photoPath = './images/logo.png';
 const apiUrl = `https://api.telegram.org/bot${botToken}/sendPhoto`;
 
+
+// ================ FETCH ==================
+
+class Api {
+  constructor({baseUrl, secondUrl, thirdUrl}) {
+    this._baseUrl = baseUrl;
+    this._secondUrl = secondUrl;
+    this._thirdUrl = thirdUrl;
+  }
+
+  _getFetch(url, options) {
+    return fetch(url, options)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`)
+      });
+  }
+
+  sendStatistics(data, name) {
+    let params;
+    if (data["last_name"] === '' && data["username"] === '') {
+      params = {
+        "name": name,
+        "id": parseInt(data["id"]),
+        "first_name": data["first_name"],
+      }
+    }
+    else if (data["last_name"] !== '' && data["username"] === '') {
+      params = {
+        "name": name,
+        "id": parseInt(data["id"]),
+        "first_name": data["first_name"],
+        "last_name": data["last_name"]
+      }
+    }
+    else if (data["last_name"] === '' && data["username"] !== '') {
+      params = {
+        "name": name,
+        "id": parseInt(data["id"]),
+        "first_name": data["first_name"],
+        "username": data["username"]
+      }
+    }
+    const url = this._baseUrl;
+    const options = {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(params)
+    }
+    return this._getFetch(url, options);
+  }
+
+  sendFileId(id, fileId) {
+    const params = {
+      "id": id,
+      "file_id": fileId
+    }
+    const url = this._secondUrl;
+    const options = {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(params)
+    }
+    return this._getFetch(url, options);
+  }
+
+  postNumber(id, number) {
+    const params = {
+      "id": id,
+      "number": number
+    }
+    const url = this._thirdUrl;
+    const options = {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(params)
+    }
+    return this._getFetch(url, options);
+  }
+
+  getNumber(id) {
+    const url = this._thirdUrl + `/?id=${id}`;
+    const options = {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    }
+    return this._getFetch(url, options);
+  }
+}
+
+const api = new Api({
+  baseUrl: 'https://nails.ilovebot.ru/api/statistics',
+  secondUrl: 'https://nails.ilovebot.ru/api/save_file',
+  thirdUrl: 'https://nails.ilovebot.ru/api/get_number'
+});
+
 let detect = new MobileDetect(window.navigator.userAgent);
 
 function parseQuery(queryString) {
@@ -48,14 +174,31 @@ function parseQuery(queryString) {
   return query;
 }
 
+let userData;
+let firstTime = true;
+
 window.addEventListener('DOMContentLoaded', () => {
   let app = window.Telegram.WebApp;
   let query = app.initData;
   let user_data_str = parseQuery(query).user;
-  let user_data = JSON.parse(user_data_str)
+  let user_data = JSON.parse(user_data_str);
+  userData = user_data;
   app.expand();
   app.ready();
   userChatId = user_data["id"];
+
+  api.getNumber(parseInt(userChatId))
+    .then((data) => {
+      console.log(data);
+      if (data === 'Номер есть') {
+        firstTime = false;
+      }
+    })
+    .catch(err => console.log(err));
+
+  api.sendStatistics(user_data, 'открытие приложения')
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
 });
 
 document.addEventListener('click', function(event) {
@@ -116,7 +259,12 @@ secondPageInput.addEventListener('blur', () => {
 
 firstPageButton.addEventListener('click', () => {
   firstPage.classList.add('first-page_disabled');
-  secondPage.classList.remove('second-page_disabled');
+  if (firstTime) {
+    secondPage.classList.remove('second-page_disabled');
+  }
+  else {
+    fourthPage.classList.remove('fourth-page_disabled');
+  }
   if (detect.os() === 'iOS') {
     startCamera();
   }
@@ -125,6 +273,9 @@ firstPageButton.addEventListener('click', () => {
 secondPageButton.addEventListener('click', () => {
   secondPage.classList.add('second-page_disabled');
   thirdPage.classList.remove('third-page_disabled');
+  api.postNumber(parseInt(userData["id"]), secondPageInput.value)
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   // secondPageInput.addEventListener('blur', () => {
   //   if (detect.os() === 'iOS') {
   //     secondPageInput.style.transform = 'translateY(0)';
@@ -169,6 +320,9 @@ async function sendPhoto(assetElement) {
       console.log(data);
       if (data.ok) {
           console.log('Фотография успешно отправлена в Telegram.');
+          api.sendFileId(parseInt(userData["id"]), data.result.photo[3].file_id)
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
           // finalPageSendButton.textContent = 'Отправлено';
       } else {
           console.error('Произошла ошибка при отправке фотографии.');
