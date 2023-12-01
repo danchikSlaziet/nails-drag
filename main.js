@@ -31,7 +31,7 @@ const nails = nailsBlock.querySelectorAll('.nail');
 const hiddenIMG = document.querySelector('.hidden-image');
 const nailsSliced = document.querySelector('.nails-sliced');
 
-const botToken = '6899155059:AAEaXDEvMiL7qstq_9BFQ59fEXGo-mcF1hU';
+const botToken = '6905480197:AAH7vIDyN7NwzdmlUlN3Fpaq5BeYwf6wuS0';
 let userChatId = '';
 const photoPath = './images/logo.png';
 const apiUrl = `https://api.telegram.org/bot${botToken}/sendPhoto`;
